@@ -1,0 +1,10 @@
+.card__like_active {
+  background-image: url(../../../../images/Unionlikeactive.svg);
+  width: 22px;
+  height: 19px;
+  margin-right: 20px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  transition: background-image 0.2s ease-in-out;
+}

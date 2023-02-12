@@ -1,0 +1,46 @@
+.profile {
+  margin: 0 auto;
+  max-width: 880px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 51px;
+}
+
+@media screen and (max-width: 670px) {
+  .profile {
+    flex-direction: column;
+    max-width: 282px;
+    padding-bottom: 36px;
+  }
+}
+
+.popup__message-flex {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.popup__icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  margin-top: 60px;
+}
+
+.popup__title-message {
+  width: 358px;
+  height: 58px;
+  left: 461px;
+  top: 407px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+
+  color: #000000;
+  margin: 0 auto;
+}

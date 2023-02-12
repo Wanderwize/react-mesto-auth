@@ -1,0 +1,74 @@
+.header__logo {
+  max-width: 142px;
+  height: 33px;
+  background-image: url(../../../images/Vectorlogotip.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 142px 33px;
+}
+
+@media screen and (max-width: 890px) {
+  .header__logo {
+    margin-left: 24px;
+    padding-top: 40px;
+    padding-bottom: 10px;
+    max-width: 103px;
+    background-size: 103px 25px;
+  }
+}
+
+.header__auth {
+  width: 114px;
+  height: 22px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+
+  text-align: center;
+
+  color: #ffffff;
+  margin: 12px 0;
+  text-decoration: none;
+}
+
+.header__auth-exit {
+  width: 56px;
+  height: 22px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  margin: 12px 0;
+
+  text-decoration: none;
+  color: #a9a9a9;
+}
+
+.header__flex {
+  display: flex;
+  justify-content: space-between;
+  min-width: 221px;
+}
+
+.header__auth-login {
+  width: 141px;
+  height: 22px;
+  width: auto;
+  margin-right: 24px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+
+  text-align: right;
+
+  color: #ffffff;
+}
