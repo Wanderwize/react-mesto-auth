@@ -29,9 +29,7 @@ export const authorize = (email, password) => {
     .then(handleOriginalResponse)
 
     .then((data) => {
-      console.log(data.email);
       localStorage.setItem("token", data.token);
-
       return data;
     })
     .catch((err) => console.log(err));

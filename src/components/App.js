@@ -51,26 +51,46 @@ function App() {
 
   const [successRegister, setSuccessRegister] = React.useState(false);
 
+  const [loader, setLoader] = React.useState(false);
+
   function infoTooltipOpenPopup() {
     setInfoTooltipOpen(!infoTooltipOpen);
   }
+
+  const handleLoader = () => {
+    setLoader(true);
+  };
 
   const handleLogin = (e) => {
     setLoggedIn(true);
   };
 
   React.useEffect(() => {
-    api
-      .getCards()
-      .then((data) => {
-        setCards(data);
-        console.log(data);
-        console.log(avatar);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      api
+        .getCards()
+        .then((data) => {
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+          setAvatar(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function handleAddPlaceSubmit(data) {
     api
@@ -79,7 +99,6 @@ function App() {
         const newCard = data;
         setCards([newCard, ...cards]);
 
-        console.log(data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -93,7 +112,7 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
         setAvatar(data);
-        console.log(data);
+
         closeAllPopups();
       })
       .catch((err) => {
@@ -101,25 +120,12 @@ function App() {
       });
   }
 
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-        setAvatar(data);
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   function handleUpdateAvatar(data) {
     api
       .setUserAvatar(data)
       .then((data) => {
         setAvatar(data);
-        console.log(data);
+
         closeAllPopups();
       })
       .catch((err) => {
@@ -141,7 +147,6 @@ function App() {
         setCards(newCard);
       })
       .catch(console.error);
-    console.log("Delete!");
   }
 
   function handleCardLike(card) {
@@ -155,22 +160,18 @@ function App() {
         );
       })
       .catch(console.error);
-    console.log("like!");
   }
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    console.log("Avatar!");
   };
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-    console.log("Profile!");
   };
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-    console.log("Place!");
   };
 
   const closeAllPopups = () => {
@@ -186,7 +187,6 @@ function App() {
       const token = localStorage.getItem("token");
       if (token) {
         auth.getContent(token).then((res) => {
-          console.log(res.data.email);
           if (res) {
             setHeaderEmail(res.data.email);
             setLoggedIn(true);
@@ -226,6 +226,7 @@ function App() {
                   setSuccessRegister={setSuccessRegister}
                   infoTooltipOpenPopup={infoTooltipOpenPopup}
                   handleLogin={handleLogin}
+                  handleLoader={handleLoader}
                 />
               }
             />

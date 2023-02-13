@@ -12,24 +12,6 @@ const Register = (props, { setSuccessRegister, setInfoTooltipOpen }) => {
     setFormValue({ ...formValue, [name]: value });
   };
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   const { email, password } = formValue;
-  //   auth
-  //     .register(email, password)
-  //     .then((res) => {
-  //       props.setSuccessRegister(true);
-  //       props.infoTooltipOpenPopup();
-  //       navigate("/sign-in", { replace: true });
-  //       console.log('все работает')
-  //     },
-  //     function(err) {
-  //       console.log('aaaaaaaaa')
-  //     }
-  //     })
-
-  // }
-
   function handleSubmit(e) {
     e.preventDefault();
     const { email, password } = formValue;
@@ -38,7 +20,6 @@ const Register = (props, { setSuccessRegister, setInfoTooltipOpen }) => {
         props.setSuccessRegister(true);
         props.infoTooltipOpenPopup();
         navigate("/sign-in", { replace: true });
-        console.log("все работает");
       },
       (err) => {
         props.setSuccessRegister(false);
@@ -60,7 +41,7 @@ const Register = (props, { setSuccessRegister, setInfoTooltipOpen }) => {
             name="email"
             placeholder="Email"
             className="login__input"
-            type="text"
+            type="email"
           />
           <input
             id="password"

@@ -19,7 +19,7 @@ function PopupWithForm(props, { isOpen, onClose }) {
             className="popup__form popup__form-add"
             name={props.name}
             id="form_user"
-            noValidate
+            
             onSubmit={props.onSubmit}
           >
             <div className="popup__form popup__form-add">{props.children}</div>

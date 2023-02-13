@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as auth from "../auth";
 
-function Login({ handleLogin, setSuccessRegister, infoTooltipOpenPopup }) {
+function Login({
+  handleLogin,
+  setSuccessRegister,
+  infoTooltipOpenPopup,
+  handleLoader,
+}) {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({ email: "", password: "" });
   const handleChange = (e) => {
@@ -19,10 +24,10 @@ function Login({ handleLogin, setSuccessRegister, infoTooltipOpenPopup }) {
     auth
       .authorize(formValue.email, formValue.password)
       .then((data) => {
-        console.log(formValue.email, formValue.password, data.token);
         if (data.token) {
           setFormValue({ email: "", password: "" });
           handleLogin();
+          handleLoader();
           navigate("/", { replace: true });
         }
       })
@@ -45,7 +50,7 @@ function Login({ handleLogin, setSuccessRegister, infoTooltipOpenPopup }) {
             name="email"
             placeholder="Email"
             className="login__input"
-            type="text"
+            type="email"
             autoComplete="on"
           />
           <input

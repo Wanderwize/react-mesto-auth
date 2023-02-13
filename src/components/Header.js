@@ -3,11 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { authorize, getContent, getEmail } from "../auth.js";
 
 function Header(props) {
-  // getContent().then((res) => {
-  //     console.log(res)
-
-  //    });
-
   const history = useNavigate();
   function signOut() {
     localStorage.removeItem("token");

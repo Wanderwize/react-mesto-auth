@@ -4,6 +4,11 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 function AddPlacePopup(props, { isOpen, onClose, onSubmit, onUpdateUser }) {
   const [name, setName] = React.useState("");
   const [link, setLink] = React.useState("");
+  
+  React.useEffect(() => {
+    setName("");
+    setLink("");
+  }, [props.isOpen]);
 
   function handleChangeName(evt) {
     evt.preventDefault();
@@ -21,8 +26,6 @@ function AddPlacePopup(props, { isOpen, onClose, onSubmit, onUpdateUser }) {
       name: name,
       link: link,
     });
-    setName("");
-    setLink("");
   }
   return (
     <PopupWithForm
@@ -44,7 +47,7 @@ function AddPlacePopup(props, { isOpen, onClose, onSubmit, onUpdateUser }) {
             required
             minLength="2"
           ></input>
-          <span id="title-error" class="error"></span>
+          <span id="title-error" className="error"></span>
           <input
             onChange={handleChangeLink}
             value={link || ""}
@@ -56,7 +59,7 @@ function AddPlacePopup(props, { isOpen, onClose, onSubmit, onUpdateUser }) {
             required
             minLength="2"
           ></input>
-          <span id="link-error" class="error"></span>
+          <span id="link-error" className="error"></span>
         </div>
       }
     />
