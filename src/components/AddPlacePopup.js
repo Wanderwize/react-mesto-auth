@@ -54,7 +54,7 @@ function AddPlacePopup(props, { isOpen, onClose, onSubmit, onUpdateUser }) {
             id="title"
             className="popup__input popup__input_name_value popup__input_place_value"
             type="text"
-            name="name"
+            name="link"
             placeholder="Ссылка"
             required
             minLength="2"

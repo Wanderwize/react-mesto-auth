@@ -1,4 +1,4 @@
-export const BASE_URL = "https://auth.nomoreparties.co";
+export const BASE_URL = "https://api.mesto.semenenko.nomoredomains.work/";
 
 function handleOriginalResponse(res) {
   if (!res.ok) {
@@ -29,13 +29,14 @@ export const authorize = (email, password) => {
     .then(handleOriginalResponse)
 
     .then((data) => {
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("jwt", data.token);
       return data;
     })
     .catch((err) => console.log(err));
 };
 
-export const getContent = (token) => {
+export const getContent = () => {
+  const token = localStorage.getItem("jwt");
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
@@ -46,4 +47,16 @@ export const getContent = (token) => {
   })
     .then((res) => res.json())
     .then((data) => data);
+};
+
+export const tokenCheck = () => {
+  const token = localStorage.getItem("jwt");
+  return fetch("http://localhost:3000/users/me", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(handleOriginalResponse);
 };

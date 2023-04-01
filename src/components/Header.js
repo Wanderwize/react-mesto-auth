@@ -5,7 +5,7 @@ import { authorize, getContent, getEmail } from "../auth.js";
 function Header(props) {
   const history = useNavigate();
   function signOut() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwt");
     history.push("/login");
   }
 

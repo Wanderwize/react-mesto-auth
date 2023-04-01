@@ -14,6 +14,7 @@ import AddPlacePopup from "./AddPlacePopup.js";
 import ProtectedRouteElement from "./ProtectedRoute";
 import { Link } from "react-router-dom";
 import * as auth from "../auth.js";
+import tokenCheck from "../auth.js";
 import InfoTooltip from "./InfoTooltip";
 import {
   BrowserRouter,
@@ -66,30 +67,26 @@ function App() {
   };
 
   React.useEffect(() => {
-    if (loggedIn) {
-      api
-        .getCards()
-        .then((data) => {
-          setCards(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    api
+      .getUserInfo()
+      .then((data) => {
+        setCurrentUser(data);
+        setAvatar(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [loggedIn]);
 
   React.useEffect(() => {
-    if (loggedIn) {
-      api
-        .getUserInfo()
-        .then((data) => {
-          setCurrentUser(data);
-          setAvatar(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    api
+      .getCards()
+      .then((data) => {
+        setCards(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [loggedIn]);
 
   function handleAddPlaceSubmit(data) {
@@ -149,9 +146,9 @@ function App() {
       .catch(console.error);
   }
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
+  const handleCardLike = (card) => {
+    const isLiked = card.likes.some((id) => id === currentUser._id);
+    console.log("123");
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -159,8 +156,8 @@ function App() {
           state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
-      .catch(console.error);
-  }
+      .catch((err) => err);
+  };
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -182,24 +179,77 @@ function App() {
     setSelectedCard(false);
   };
 
-  const tokenCheck = () => {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        auth.getContent(token).then((res) => {
-          if (res) {
-            setHeaderEmail(res.data.email);
-            setLoggedIn(true);
-            navigate("/", { replace: true });
-          }
-        });
-      }
-    }
-  };
+  // const tokenCheck = () => {
+  //   if (localStorage.getItem("token")) {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       auth.getContent(token).then((res) => {
+  //         setHeaderEmail(res.data.email);
+  //         setLoggedIn(true);
+  //         navigate("/", { replace: true });
+  //       })
 
-  React.useEffect(() => {
-    tokenCheck();
-  }, []);
+  //     }
+  //   }
+  // };
+
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     auth
+  //       .tokenCheck()
+  //       .then((res) => {
+  //         if (res.ok) {
+  //           setHeaderEmail(res.data.email);
+  //           setLoggedIn(true);
+  //           navigate("/", { replace: true });
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         localStorage.removeItem("token");
+  //         console.log(err);
+  //       });
+  //   }
+  // }, []);
+
+  // const tokenCheck = () => {
+  //   const token = localStorage.getItem("jwt");
+  //   if (token) {
+  //     fetch("http://localhost:3000/users/me", {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         console.log(res);
+  //         setLoggedIn(true);
+  //         navigate("/", { replace: true });
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // };
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      auth
+        .tokenCheck(token)
+        .then((res) => {
+          setHeaderEmail(res.email);
+          setLoggedIn(true);
+          navigate("/");
+        })
+        .catch((err) => {
+          localStorage.removeItem("jwt");
+          console.log(err);
+        });
+    }
+  }, [navigate]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

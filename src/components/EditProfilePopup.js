@@ -8,12 +8,12 @@ function EditProfilePopup(props, { isOpen, onClose, onSubmit, onUpdateUser }) {
 
   function handleChangeName(evt) {
     evt.preventDefault();
-    setName(evt.target.value);
+    setName(evt.target.value || '');
   }
 
   function handleChangeDescription(evt) {
     evt.preventDefault();
-    setAbout(evt.target.value);
+    setAbout(evt.target.value || '');
   }
 
   function handleSubmit(e) {

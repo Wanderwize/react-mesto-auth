@@ -1,7 +1,6 @@
 export class Api {
   constructor(setting) {
     this._url = setting.baseUrl;
-    this._headers = setting.headers;
   }
 
   _checkResponse(res) {
@@ -12,75 +11,117 @@ export class Api {
   }
 
   getUserInfo() {
+    const token = localStorage.getItem("jwt");
     return fetch(`${this._url}/users/me`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }).then(this._checkResponse);
   }
 
   getCards() {
+    const token = localStorage.getItem("jwt");
     return fetch(`${this._url}/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }).then(this._checkResponse);
   }
 
   pushUserInfo(data) {
+    const token = localStorage.getItem("jwt");
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ name: data.name, about: data.about }),
     }).then(this._checkResponse);
   }
 
-  pushNewCard(data) {
+  pushNewCard({ name, link }) {
+    const token = localStorage.getItem("jwt");
     return fetch(`${this._url}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        name: data.name,
-        link: data.link,
+        name,
+        link,
       }),
     }).then(this._checkResponse);
   }
 
   deleteCard(id) {
+    const token = localStorage.getItem("jwt");
     return fetch(`${this._url}/cards/${id}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }).then(this._checkResponse);
   }
 
-  setLike(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
-      method: "PUT",
-      headers: this._headers,
-    }).then(this._checkResponse);
-  }
+  // setLike(id) {
+  //   const token = localStorage.getItem("jwt");
+  //   return fetch(`${this._url}/cards/${id}/likes`, {
+  //     method: "PUT",
+  //     headers: {
+  //       authorization: `Bearer ${token}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then(this._checkResponse);
+  // }
 
-  deleteLike(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
-      method: "DELETE",
-      headers: this._headers,
+  // deleteLike(id) {
+  //   const token = localStorage.getItem("jwt");
+  //   return fetch(`${this._url}/cards/${id}/likes`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       authorization: `Bearer ${token}`,
+  //     },
+  //   }).then(this._checkResponse);
+  // }
+
+  // changeLikeCardStatus(id, isLiked) {
+  //   if (!isLiked) {
+  //     return this.deleteLike(id);
+  //   } else {
+  //     return this.setLike(id);
+  //   }
+  // }
+
+  changeLikeCardStatus = (id, isLiked) => {
+    const token = localStorage.getItem("jwt");
+
+    return fetch(`${this._url}/cards/${id}/likes`, {
+      method: isLiked ? "PUT" : "DELETE",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }).then(this._checkResponse);
-  }
+  };
 
   setUserAvatar(data) {
+    const token = localStorage.getItem("jwt");
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       }),
     }).then(this._checkResponse);
-  }
-
-  changeLikeCardStatus(id, isLiked) {
-    if (!isLiked) {
-      return this.deleteLike(id);
-    } else {
-      return this.setLike(id);
-    }
   }
 
   getInitialData() {
@@ -88,12 +129,22 @@ export class Api {
   }
 }
 
+export const tokenCheck = () => {
+  const token = localStorage.getItem("jwt");
+  fetch(`${this._url}/users/me`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).catch((error) => {
+    console.error(error);
+  });
+};
+
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-54",
-  headers: {
-    authorization: "3c1df54f-ccd1-445f-a430-a8f888e610a5",
-    "Content-Type": "application/json",
-  },
+  baseUrl: "https://api.mesto.semenenko.nomoredomains.work/",
 });
 
 export default api;
